@@ -8,6 +8,7 @@ class UniCode {
 
   static ThemeData defaultTheme = ThemeData(
     accentColor: Colors.white,
-    primaryColor:Color(0xffEE0F38)
+    primaryColor:Color(0xffEE0F38),
+    shadowColor: Color(0xffF3B1BC)
   );
 }
