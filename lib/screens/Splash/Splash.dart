@@ -14,7 +14,7 @@ class _SplashState extends State<Splash> {
 
   @override
   void initState() {
-    Future.delayed(Duration(seconds: 2),(){
+    Future.delayed(Duration(seconds: 5),(){
       Navigator.pushNamedAndRemoveUntil(context, '/onboarding', (route) => false);
     });
     super.initState();
