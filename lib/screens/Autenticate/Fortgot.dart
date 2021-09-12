@@ -151,6 +151,12 @@ class _FortGotState extends State<FortGot> {
                   SizedBox(
                     height: responsive.hp(3),
                   ),
+                  TextButton(
+                      onPressed: () {
+                        Navigator.pushNamed(context, '/login');
+                      },
+                      child: Text('Volver',
+                          style: GoogleFonts.poppins(textStyle: TextStyle())))
                 ],
               ),
             ),

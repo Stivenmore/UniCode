@@ -265,6 +265,12 @@ class _RegisterState extends State<Register> {
                           ),
                         );
                       }),
+                      TextButton(
+                      onPressed: () {
+                        Navigator.pushNamed(context, '/login');
+                      },
+                      child: Text('Volver',
+                          style: GoogleFonts.poppins(textStyle: TextStyle()))),
                   SizedBox(
                     height: responsive.hp(3),
                   ),
