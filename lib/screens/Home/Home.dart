@@ -23,7 +23,7 @@ class _HomeState extends State<Home> {
           child: TextButton(onPressed: () async{
             await _repository.signOut();
             Navigator.pushNamedAndRemoveUntil(context, '/login', (route) => false);
-          }, child: Text('Exit')),
+          }, child: Text('Home', style: TextStyle(fontSize: 22),)),
         ),
       ),
     );

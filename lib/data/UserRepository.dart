@@ -1,3 +1,5 @@
+import 'package:hive/hive.dart';
+import 'package:unicode/domain/Models/Hive/UserHive.dart';
 import 'package:unicode/domain/Services/AbstraAutenticate.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -15,7 +17,13 @@ class UserRepository implements AbstractServices {
       if (user.user!.uid != '') {
         final usercloud =
             await _firestore.collection('Users').doc(user.user!.uid).get();
-        print('user.id auth: ' + usercloud.id);
+        final box = Hive.box<UserHive>('user');
+        box.delete(0);
+        UserHive userHive = UserHive(
+            username: usercloud.data()!['fullName'],
+            email: usercloud.data()!['email'],
+            password: usercloud.data()!['password']);
+        box.add(userHive);
         return true;
       } else {
         return false;
@@ -31,6 +39,7 @@ class UserRepository implements AbstractServices {
       {required String email,
       required String password,
       required String fullname}) async {
+    final box = Hive.box<UserHive>('user');
     try {
       final credentials = await _firebaseAuth.createUserWithEmailAndPassword(
           email: email, password: password);
@@ -39,6 +48,10 @@ class UserRepository implements AbstractServices {
             .collection('Users')
             .doc(credentials.user!.uid)
             .set({'email': email, 'fullName': fullname, 'password': password});
+        box.delete(0);
+        UserHive userHive =
+            UserHive(username: fullname, email: email, password: password);
+        box.add(userHive);
         return true;
       } else {
         return false;

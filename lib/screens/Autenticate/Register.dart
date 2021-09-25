@@ -237,7 +237,7 @@ class _RegisterState extends State<Register> {
                                 if (resp) {
                                   controller.success();
                                   Navigator.pushNamedAndRemoveUntil(
-                                      context, '/home', (route) => false);
+                                      context, '/allhome', (route) => false);
                                 } else {
                                   Timer(Duration(seconds: 2), () {
                                     controller.error();
@@ -254,6 +254,7 @@ class _RegisterState extends State<Register> {
                                   controller.reset();
                                 });
                               }
+                              controller.reset();
                             },
                             child: Text(
                               'Register',

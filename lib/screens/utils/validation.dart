@@ -17,7 +17,7 @@ class Validators {
   final validarPassword = StreamTransformer<String, String>.fromHandlers(
       handleData: (password, sink) {
     Pattern pattern =
-        r"^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&<>]{8,}$";
+        r"^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&<>])[A-Za-z\d@$!%*#?&<>]{8,}$";
     RegExp regExp = new RegExp(pattern as String);
 
     if (regExp.hasMatch(password)) {

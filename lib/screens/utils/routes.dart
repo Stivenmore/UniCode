@@ -1,11 +1,4 @@
-
-import 'package:flutter/material.dart';
-import 'package:unicode/screens/Autenticate/Fortgot.dart';
-import 'package:unicode/screens/Autenticate/Login.dart';
-import 'package:unicode/screens/Autenticate/Register.dart';
-import 'package:unicode/screens/Home/Home.dart';
-import 'package:unicode/screens/Onboard/Onboard.dart';
-import 'package:unicode/screens/Splash/Splash.dart';
+import 'package:unicode/screens/utils/widgetroute.dart';
 
 final Map <String, WidgetBuilder> routes = {
   '/':  (BuildContext context) => Splash(),
@@ -13,5 +6,9 @@ final Map <String, WidgetBuilder> routes = {
   '/login': (BuildContext context) => Login(),
   '/onboarding': (BuildContext context) => Onboarding(),
   '/register': (BuildContext context) => Register(),
-  '/fortgot': (BuildContext context) => FortGot()
+  '/fortgot': (BuildContext context) => FortGot(),
+  '/allhome': (BuildContext context) => AllHome(),
+  '/search': (BuildContext context) => Search(),
+  '/favorite': (BuildContext context) => Favorite(),
+  '/profile' : (BuildContext context) => Profile()
 };
