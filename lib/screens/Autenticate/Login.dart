@@ -173,8 +173,9 @@ class _LoginState extends State<Login> {
                                 focusColor: UniCode.gray2,
                                 fillColor: UniCode.gray2,
                               ),
-                              validator: (String? value) =>
-                                  value!.isEmpty ? 'Ingresa tu contraseña' : null,
+                              validator: (String? value) => value!.isEmpty
+                                  ? 'Ingresa tu contraseña'
+                                  : null,
                             );
                           }),
                     ),
@@ -211,17 +212,18 @@ class _LoginState extends State<Login> {
                                 if (snapshot.hasData &&
                                     _formKey.currentState!.validate()) {
                                   final bool resp = await _repository.login(
-                                      email: email.text, password: password.text);
+                                      email: email.text,
+                                      password: password.text);
                                   if (resp) {
-                                      controller.success();                               
+                                    controller.success();
                                     Navigator.pushNamedAndRemoveUntil(
                                         context, '/allhome', (route) => false);
+                                    controller.reset();
                                   } else {
                                     Timer(Duration(seconds: 2), () {
                                       controller.error();
                                     });
                                   }
-                                      controller.reset();
                                 } else {
                                   Timer(Duration(seconds: 2), () {
                                     controller.error();
@@ -232,6 +234,7 @@ class _LoginState extends State<Login> {
                                     controller.reset();
                                   });
                                 }
+                                controller.reset();
                               },
                               child: Text(
                                 'Iniciar sesion',

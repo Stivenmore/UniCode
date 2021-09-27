@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
+import 'package:unicode/domain/Models/Hive/UserHive.dart';
 import 'package:unicode/screens/Courses/Courses.dart';
 import 'package:unicode/screens/Favorite/Favorite.dart';
 import 'package:unicode/screens/Home/Home.dart';
@@ -25,10 +27,17 @@ class _AllHomeState extends State<AllHome> {
   ];
   int _selectedIndex = 0;
 
-  void _onItemTapped(int index) {
-    setState(() {
+  void _onItemTapped(int index) async{
+    if (Hive.isBoxOpen('user') && index == 4) {
+      setState(() {
       _selectedIndex = index;
     });
+    } else {
+      await Hive.openBox<UserHive>('user');
+      setState(() {
+      _selectedIndex = index;
+    });
+    }
   }
 
   @override
@@ -48,7 +57,7 @@ class _AllHomeState extends State<AllHome> {
                 return GestureDetector(
                   onTap: () => _onItemTapped(index),
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 15),
+                    padding: const EdgeInsets.only(left: 15, right: 10),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.center,

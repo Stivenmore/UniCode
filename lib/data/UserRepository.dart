@@ -7,6 +7,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class UserRepository implements AbstractServices {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  
+  String get userUid => _firebaseAuth.currentUser!.uid;
+  
+   bool get isAuth =>
+      _firebaseAuth.currentUser != null &&
+      _firebaseAuth.currentUser?.uid != null;
 
   @override
   Future login({required String email, required String password}) async {

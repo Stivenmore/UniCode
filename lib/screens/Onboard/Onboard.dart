@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
 import 'package:unicode/screens/components/map.dart';
+import 'package:unicode/screens/locals/prefs.dart';
 import 'package:unicode/screens/utils/responsive.dart';
 import 'package:unicode/screens/utils/theme.dart';
 
@@ -16,6 +17,7 @@ class Onboarding extends StatefulWidget {
 }
 
 class _OnboardingState extends State<Onboarding> {
+  final _prefs = UserPreferences();
   final RoundedLoadingButtonController controller =
       RoundedLoadingButtonController();
   int currentPage = 0;
@@ -88,6 +90,7 @@ class _OnboardingState extends State<Onboarding> {
                                         color: Theme.of(context).primaryColor,
                                         controller: controller,
                                         onPressed: () {
+                                          _prefs.primary = false;
                                           Timer(Duration(seconds: 2), (){
                                             controller.success();
                                           });

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hive/hive.dart';
+import 'package:unicode/data/UserRepository.dart';
 import 'package:unicode/domain/Models/Hive/UserHive.dart';
 import 'package:unicode/screens/utils/responsive.dart';
 import 'package:unicode/screens/utils/theme.dart';
@@ -103,7 +104,12 @@ class _ProfileState extends State<Profile> {
                 ),
               ),
               GestureDetector(
-                onTap: () {},
+                onTap: () {
+                  box.delete(0);
+                  UserRepository().signOut();
+                  Navigator.pushNamedAndRemoveUntil(
+                      context, '/login', (route) => false);
+                },
                 child: Bottom(
                   primary: Icons.close,
                   secundary: Icons.arrow_forward_ios_outlined,
