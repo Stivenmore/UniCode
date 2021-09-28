@@ -27,4 +27,17 @@ class Validators {
           'tu contraseña debe tener caracter especial, letras, mas de 8 caracteres');
     }
   });
+
+  final validarletras = StreamTransformer<String, String>.fromHandlers(
+      handleData: (text, sink) {
+    Pattern pattern =
+        r"^[a-zA-Z\s]$/";
+    RegExp regExp = new RegExp(pattern as String);
+    if (regExp.hasMatch(text)) {
+      sink.add(text);
+    } else {
+      sink.addError(
+          'Caracter no valido');
+    }
+  });
 }

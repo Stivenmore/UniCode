@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:hive/hive.dart';
 import 'package:unicode/domain/Models/Hive/UserHive.dart';
 import 'package:unicode/domain/Models/Normals/modelCourses.dart';
@@ -10,6 +13,7 @@ import 'package:unicode/screens/utils/widgetroute.dart';
 class HomeRepository with ChangeNotifier implements AbstractHome {
   FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  FirebaseStorage _storage = FirebaseStorage.instance;
   CoursesModel coursesModel = CoursesModel();
   List<AllCoursesModel> allcoursesModel = [];
   HomeRepository() {
@@ -54,42 +58,54 @@ class HomeRepository with ChangeNotifier implements AbstractHome {
   @override
   setMeCourses(
       {required String description,
-      required String imagepromotion,
+      required File imagepromotion,
       required String nivel,
       required String nombre,
       required String url,
       required String namecurse}) async {
-        final box = Hive.box<UserHive>('user');
-        final user = box.get(0) as UserHive;
-     await _firestore
+    final box = Hive.box<UserHive>('user');
+    final user = box.get(0) as UserHive;
+    final postimageRef = _storage.ref().child('ImagenCap');
+      var timekey = DateTime.now();
+
+    final UploadTask uploadTask =
+          postimageRef.child(timekey.toString() + '.jpg').putFile(imagepromotion);
+      var urlImage = await (await uploadTask).ref.getDownloadURL();
+      var urlpromotion = urlImage;
+
+    await _firestore
         .collection('Users')
         .doc(_firebaseAuth.currentUser!.uid)
         .collection('Mis cursos')
-        .doc(namecurse).set({
-          'descripcion': description,
-          'imagepromotion': imagepromotion,
-          'nivel': nivel,
-          'tutor': user.username,
-          'namecurse': namecurse
-        });
-     await _firestore
+        .doc(namecurse)
+        .set({
+      'descripcion': description,
+      'imagepromotion': urlpromotion,
+      'nivel': nivel,
+      'tutor': user.username,
+      'namecurse': namecurse
+    });
+    await _firestore
         .collection('Users')
         .doc(_firebaseAuth.currentUser!.uid)
         .collection('Mis cursos')
-        .doc(namecurse).collection('Capitulos').doc().set({
-          'nombre': nombre,
-          'url': url
-        });
+        .doc(namecurse)
+        .collection('Capitulos')
+        .doc()
+        .set({'nombre': nombre, 'url': url});
   }
 
   @override
-  getallcourses() async{
+  getallcourses() async {
     try {
       final capReference = await _firestore
-            .collection('Users')
-            .doc(_firebaseAuth.currentUser!.uid)
-            .collection('Mis cursos').get();
-        allcoursesModel = (capReference.docs).map((e) => AllCoursesModel.fromFirebase(e)).toList();  
+          .collection('Users')
+          .doc(_firebaseAuth.currentUser!.uid)
+          .collection('Mis cursos')
+          .get();
+      allcoursesModel = (capReference.docs)
+          .map((e) => AllCoursesModel.fromFirebase(e))
+          .toList();
       print('_______');
       print(allcoursesModel.length);
       print('_______');
