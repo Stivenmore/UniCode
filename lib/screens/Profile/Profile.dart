@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:hive/hive.dart';
 import 'package:unicode/data/UserRepository.dart';
 import 'package:unicode/domain/Models/Hive/UserHive.dart';
+import 'package:unicode/screens/utils/FadeAnimation.dart';
 import 'package:unicode/screens/utils/responsive.dart';
 import 'package:unicode/screens/utils/theme.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -49,56 +50,59 @@ class _ProfileState extends State<Profile> {
               SizedBox(
                 height: responsive.height * 0.05,
               ),
-              Container(
-                height: 210,
-                width: 160,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(16),
-                    color: UniCode.defaultTheme.accentColor,
-                    border:
-                        Border.all(color: UniCode.defaultTheme.accentColor)),
+              FadeAnimation(1000, Container(
+                  height: 210,
+                  width: 160,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(16),
+                      color: UniCode.defaultTheme.accentColor,
+                      border:
+                          Border.all(color: UniCode.defaultTheme.accentColor)),
+                ),
               ),
               const SizedBox(height: 50),
               Padding(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 40, vertical: 20),
-                child: Container(
-                  height: 160,
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(32),
-                    color: UniCode.defaultTheme.accentColor,
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 20, vertical: 20),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        Container(
-                          child: Text(
-                            '${user.username!} ',
-                            style: GoogleFonts.poppins(
-                              textStyle: TextStyle(
-                                  fontSize: 18, fontWeight: FontWeight.w500),
+                child: FadeAnimation(
+                  2000, Container(
+                    height: 160,
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(32),
+                      color: UniCode.defaultTheme.accentColor,
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 20, vertical: 20),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          Container(
+                            child: Text(
+                              '${user.username!} ',
+                              style: GoogleFonts.poppins(
+                                textStyle: TextStyle(
+                                    fontSize: 18, fontWeight: FontWeight.w500),
+                              ),
+                              overflow: TextOverflow.ellipsis,
                             ),
-                            overflow: TextOverflow.ellipsis,
                           ),
-                        ),
-                        Container(
-                          child: Text(
-                            '${user.email!}',
-                            style: GoogleFonts.poppins(
-                              textStyle: TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w500,
-                                  color: UniCode.gray3.withOpacity(0.9)),
+                          Container(
+                            child: Text(
+                              '${user.email!}',
+                              style: GoogleFonts.poppins(
+                                textStyle: TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w500,
+                                    color: UniCode.gray3.withOpacity(0.9)),
+                              ),
+                              overflow: TextOverflow.ellipsis,
                             ),
-                            overflow: TextOverflow.ellipsis,
                           ),
-                        ),
-                        customspacer,
-                      ],
+                          customspacer,
+                        ],
+                      ),
                     ),
                   ),
                 ),
@@ -110,10 +114,12 @@ class _ProfileState extends State<Profile> {
                   Navigator.pushNamedAndRemoveUntil(
                       context, '/login', (route) => false);
                 },
-                child: Bottom(
-                  primary: Icons.close,
-                  secundary: Icons.arrow_forward_ios_outlined,
-                  title: 'Cerrar sesion',
+                child: FadeAnimation(
+                  4000, Bottom(
+                    primary: Icons.close,
+                    secundary: Icons.arrow_forward_ios_outlined,
+                    title: 'Cerrar sesion',
+                  ),
                 ),
               ),
               const SizedBox(
@@ -129,10 +135,12 @@ class _ProfileState extends State<Profile> {
                     throw 'Could not launch $url';
                   }
                 },
-                child: Bottom(
-                  primary: Icons.help,
-                  secundary: Icons.arrow_forward_ios_outlined,
-                  title: 'Ayuda',
+                child: FadeAnimation(
+                  4000, Bottom(
+                    primary: Icons.help,
+                    secundary: Icons.arrow_forward_ios_outlined,
+                    title: 'Ayuda',
+                  ),
                 ),
               ),
             ],
