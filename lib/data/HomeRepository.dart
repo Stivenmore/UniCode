@@ -63,36 +63,62 @@ class HomeRepository with ChangeNotifier implements AbstractHome {
       required String nombre,
       required String url,
       required String namecurse}) async {
-    final box = Hive.box<UserHive>('user');
-    final user = box.get(0) as UserHive;
-    final postimageRef = _storage.ref().child('ImagenCap');
+    try {
+      final box = Hive.box<UserHive>('user');
+      final user = box.get(0) as UserHive;
+      final postimageRef = _storage.ref().child('ImagenCap');
       var timekey = DateTime.now();
 
-    final UploadTask uploadTask =
-          postimageRef.child(timekey.toString() + '.jpg').putFile(imagepromotion);
+      final UploadTask uploadTask = postimageRef
+          .child(timekey.toString() + '.jpg')
+          .putFile(imagepromotion);
       var urlImage = await (await uploadTask).ref.getDownloadURL();
       var urlpromotion = urlImage;
+      int id = new DateTime.now().millisecondsSinceEpoch;
+      final index = id;
+      await _firestore
+          .collection('Users')
+          .doc(_firebaseAuth.currentUser!.uid)
+          .collection('Mis cursos')
+          .doc(namecurse)
+          .set({
+        'descripcion': description,
+        'imagepromotion': urlpromotion,
+        'nivel': nivel,
+        'tutor': user.username,
+        'namecurse': namecurse
+      });
+      await _firestore
+          .collection('Users')
+          .doc(_firebaseAuth.currentUser!.uid)
+          .collection('Mis cursos')
+          .doc(namecurse)
+          .collection('Capitulos')
+          .doc()
+          .set({'nombre': nombre, 'url': url});
 
-    await _firestore
-        .collection('Users')
-        .doc(_firebaseAuth.currentUser!.uid)
-        .collection('Mis cursos')
-        .doc(namecurse)
-        .set({
-      'descripcion': description,
-      'imagepromotion': urlpromotion,
-      'nivel': nivel,
-      'tutor': user.username,
-      'namecurse': namecurse
-    });
-    await _firestore
-        .collection('Users')
-        .doc(_firebaseAuth.currentUser!.uid)
-        .collection('Mis cursos')
-        .doc(namecurse)
-        .collection('Capitulos')
-        .doc()
-        .set({'nombre': nombre, 'url': url});
+      await _firestore
+          .collection('Cursos')
+          .doc('${index.toString()}$nivel')
+          .set({
+        'descripcion': description,
+        'imagepromotion': urlpromotion,
+        'nivel': nivel,
+        'tutor': user.username,
+        'namecurse': namecurse
+      });
+
+      await _firestore
+          .collection('Cursos')
+          .doc('${index.toString()}$nivel')
+          .collection('Capitulos')
+          .doc()
+          .set({'nombre': nombre, 'url': url});
+      return true;
+    } catch (e) {
+      print(e);
+      return false;
+    }
   }
 
   @override
@@ -116,4 +142,54 @@ class HomeRepository with ChangeNotifier implements AbstractHome {
       print('____________');
     }
   }
+
+  @override
+  setnewCap(
+      {required String description,
+      required String nivel,
+      required String imagepromotion,
+      required String namecurse,
+      required String nombre,
+      required String url}) async {
+    final box = Hive.box<UserHive>('user');
+    final user = box.get(0) as UserHive;
+    try {
+      await _firestore
+          .collection('Users')
+          .doc(_firebaseAuth.currentUser!.uid)
+          .collection('Mis cursos')
+          .doc(namecurse)
+          .collection('Capitulos')
+          .doc()
+          .set({'nombre': nombre, 'url': url});
+      final resp = await _firestore
+          .collection('Cursos')
+          .where('descripcion', isEqualTo: description)
+          .where(
+            'imagepromotion',
+            isEqualTo: imagepromotion,
+          )
+          .where('namecurse', isEqualTo: namecurse)
+          .where('nivel', isEqualTo: nivel)
+          .get();
+      await _firestore
+          .collection('Cursos')
+          .doc(resp.docs[0].id)
+          .collection('Capitulos')
+          .doc()
+          .set({'nombre': nombre, 'url': url});
+      return true;
+    } catch (e) {
+      print(e);
+      return false;
+    }
+  }
 }
+
+/*
+'descripcion': description,
+        'imagepromotion': urlpromotion,
+        'nivel': nivel,
+        'tutor': user.username,
+        'namecurse': namecurse
+*/

@@ -20,8 +20,14 @@ class _FadeAnimationState extends State<FadeAnimation>
     super.initState();
     _controller = AnimationController(
         vsync: this,
-        duration: Duration(milliseconds: widget.delay),);
-    _animation = CurvedAnimation(parent: _controller, curve: Curves.fastOutSlowIn);
+        duration: Duration(milliseconds: widget.delay),
+        value: 0,
+        lowerBound: 0,
+        upperBound: 1);
+    _animation = Tween(
+      begin: 0.0,
+      end: 1.0,
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOut));
 
     _controller.forward();
   }

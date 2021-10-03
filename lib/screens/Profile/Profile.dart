@@ -50,7 +50,7 @@ class _ProfileState extends State<Profile> {
               SizedBox(
                 height: responsive.height * 0.05,
               ),
-              FadeAnimation(1000, Container(
+              FadeAnimation(300, Container(
                   height: 210,
                   width: 160,
                   decoration: BoxDecoration(
@@ -65,7 +65,7 @@ class _ProfileState extends State<Profile> {
                 padding:
                     const EdgeInsets.symmetric(horizontal: 40, vertical: 20),
                 child: FadeAnimation(
-                  2000, Container(
+                  1000, Container(
                     height: 160,
                     width: double.infinity,
                     decoration: BoxDecoration(
@@ -115,7 +115,7 @@ class _ProfileState extends State<Profile> {
                       context, '/login', (route) => false);
                 },
                 child: FadeAnimation(
-                  4000, Bottom(
+                  1500, Bottom(
                     primary: Icons.close,
                     secundary: Icons.arrow_forward_ios_outlined,
                     title: 'Cerrar sesion',
@@ -136,7 +136,7 @@ class _ProfileState extends State<Profile> {
                   }
                 },
                 child: FadeAnimation(
-                  4000, Bottom(
+                  1500, Bottom(
                     primary: Icons.help,
                     secundary: Icons.arrow_forward_ios_outlined,
                     title: 'Ayuda',

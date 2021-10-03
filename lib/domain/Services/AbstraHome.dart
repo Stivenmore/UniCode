@@ -12,4 +12,11 @@ abstract class AbstractHome {
       required String namecurse});
   
   getallcourses();
+
+  setnewCap({required String description,
+  required String imagepromotion,
+      required String nivel,
+      required String namecurse,
+       required String nombre,
+        required String url});
 }

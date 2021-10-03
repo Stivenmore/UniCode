@@ -31,7 +31,7 @@ class Validators {
   final validarletras = StreamTransformer<String, String>.fromHandlers(
       handleData: (text, sink) {
     Pattern pattern =
-        r"^[a-zA-Z\s]$/";
+       r'^[ A-Za-zäÄëËïÏöÖüÜáéíóúáéíóúÁÉÍÓÚÂÊÎÔÛâêîôûàèìòùÀÈÌÒÙ. ]+$';
     RegExp regExp = new RegExp(pattern as String);
     if (regExp.hasMatch(text)) {
       sink.add(text);
@@ -40,4 +40,21 @@ class Validators {
           'Caracter no valido');
     }
   });
+  
+  final validarURL = StreamTransformer<String, String>.fromHandlers(
+      handleData: (text, sink) {
+    Pattern pattern =
+       r'^[(http(s)?):\/\/(www\.)?a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)$';
+    RegExp regExp = new RegExp(pattern as String);
+    if (regExp.hasMatch(text)) {
+      sink.add(text);
+    } else {
+      sink.addError(
+          'Url no valida');
+    }
+  });
 }
+
+
+//url
+// /

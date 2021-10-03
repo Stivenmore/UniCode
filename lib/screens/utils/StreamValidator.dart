@@ -49,16 +49,15 @@ class LetraValidate with Validators {
       _tutorController.stream.transform(validarletras);
   Stream<String> get nombreStream =>
       _nombreController.stream.transform(validarletras);
-  Stream<String> get urlStream => _urlController.stream.transform(validarEmail);
+  Stream<String> get urlStream => _urlController.stream.transform(validarURL);
 
-  Stream<bool> get formValidStream => Rx.combineLatest6(
+  Stream<bool> get formValidStream => Rx.combineLatest5(
       descripcionStream,
       namecurseStream,
       nivelStream,
-      tutorStream,
       nombreStream,
       urlStream,
-      (dynamic a, dynamic b, dynamic c, dynamic d, dynamic e, dynamic f) =>
+      (dynamic a, dynamic b, dynamic c, dynamic d, dynamic e,) =>
           true);
 
   String? get descripcion => _descripcionController.value;
@@ -69,11 +68,11 @@ class LetraValidate with Validators {
   String? get nombre => _nombreController.value;
 
   Function(String) get changedescripcionr => _descripcionController.sink.add;
-  Function(String) get changenamecurse => _descripcionController.sink.add;
-  Function(String) get changenivel => _descripcionController.sink.add;
-  Function(String) get changetutor => _descripcionController.sink.add;
-  Function(String) get changenombre => _descripcionController.sink.add;
-  Function(String) get changeurl => _descripcionController.sink.add;
+  Function(String) get changenamecurse => _namecurseController.sink.add;
+  Function(String) get changenivel => _nivelController.sink.add;
+  Function(String) get changetutor => _tutorController.sink.add;
+  Function(String) get changenombre => _nombreController.sink.add;
+  Function(String) get changeurl => _urlController.sink.add;
 
   dispose() {
     _descripcionController.close();
@@ -81,6 +80,31 @@ class LetraValidate with Validators {
     _nivelController.close();
     _nombreController.close();
     _tutorController.close();
+    _urlController.close();
+  }
+}
+
+class AddCapValidate with Validators{
+  final _nombreController = BehaviorSubject<String>();
+  final _urlController = BehaviorSubject<String>();
+
+  Stream<String> get nombreStream =>
+      _nombreController.stream.transform(validarletras);
+  Stream<String> get urlStream => _urlController.stream.transform(validarURL);
+
+  Stream<bool> get formValidStream => Rx.combineLatest2(
+      nombreStream,
+      urlStream,
+      (dynamic a, dynamic b) =>
+          true);
+  String? get url => _urlController.value;
+  String? get nombre => _nombreController.value;
+
+  Function(String) get changenombre => _nombreController.sink.add;
+  Function(String) get changeurl => _urlController.sink.add;
+
+  dispose() {
+    _nombreController.close();;
     _urlController.close();
   }
 }

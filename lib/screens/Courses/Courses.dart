@@ -12,22 +12,25 @@ class Courses extends StatefulWidget {
 class _CoursesState extends State<Courses> {
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(length: 2, child: Scaffold(
-      appBar: AppBar(
-        bottom: TabBar(tabs: [
-          Tab(text: 'Agrega Cursos',),
-          Tab(text: 'Agrega Capitulo',)
-        ]),
-        title: Text('Courses'),
-        centerTitle: true,
-        
-      ),
-      body: TabBarView(
-            children: [
-              AddCourses(),
-              AddCap()
-            ],
+    return DefaultTabController(
+        length: 2,
+        child: Scaffold(
+          appBar: AppBar(
+            bottom: TabBar(tabs: [
+              Tab(
+                text: 'Agrega Cursos',
+              ),
+              Tab(
+                text: 'Agrega Capitulo',
+              )
+            ]),
+            title: Text('Courses'),
+            centerTitle: true,
           ),
-    ));
+          body: TabBarView(
+            
+            children: [AddCourses(), AddCap()],
+          ),
+        ));
   }
 }
