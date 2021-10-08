@@ -19,9 +19,10 @@ class AddCourses extends StatefulWidget {
 }
 
 class _AddCoursesState extends State<AddCourses> {
+  String texto = 'Buscando tus cursos';
   final RoundedLoadingButtonController controller =
       RoundedLoadingButtonController();
-        HomeRepository homeRepository = HomeRepository();
+  HomeRepository homeRepository = HomeRepository();
   final letravalidate = LetraValidate();
   File? image;
   TextEditingController namecurses = TextEditingController();
@@ -30,6 +31,25 @@ class _AddCoursesState extends State<AddCourses> {
   TextEditingController nombre = TextEditingController();
   TextEditingController url = TextEditingController();
 
+  @override
+  void initState() {
+    Future.delayed(Duration(seconds: 2), () {
+      setState(() {
+        texto = 'Buscando';
+      });
+    });
+    Future.delayed(Duration(seconds: 7), () {
+      setState(() {
+        texto = 'Aun no logramos encontrar tus cursos';
+      });
+    });
+    Future.delayed(Duration(seconds: 11), () {
+      setState(() {
+        texto = 'No logramos encontrar tus cursos';
+      });
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,18 +64,16 @@ class _AddCoursesState extends State<AddCourses> {
           SliverToBoxAdapter(
             child: Container(
               height: 200,
-              child: CustomScrollView(
-                scrollDirection: Axis.horizontal,
-                slivers: [
-                  SliverGrid(
-                    delegate: SliverChildBuilderDelegate((_, index) {
-                      return provider.length > 0 || provider.isNotEmpty
-                          ? Padding(
+              child: provider.isNotEmpty
+                  ? CustomScrollView(
+                      scrollDirection: Axis.horizontal,
+                      slivers: [
+                        SliverGrid(
+                          delegate: SliverChildBuilderDelegate((_, index) {
+                            return Padding(
                               padding: const EdgeInsets.all(1.0),
                               child: GestureDetector(
-                                onTap: (){
-                                  Navigator.pushNamed(context, '/addcap', arguments: provider[index]);
-                                },
+                                onTap: () {},
                                 child: Container(
                                   padding: const EdgeInsets.all(8.0),
                                   decoration: BoxDecoration(
@@ -71,10 +89,10 @@ class _AddCoursesState extends State<AddCourses> {
                                           height: 200,
                                           width: 200,
                                           child: FadeInImage(
-                                            placeholder:
-                                                AssetImage('assets/no-image.jpg'),
-                                            image: NetworkImage(
-                                                provider[index].imagepromotion!),
+                                            placeholder: AssetImage(
+                                                'assets/no-image.jpg'),
+                                            image: NetworkImage(provider[index]
+                                                .imagepromotion!),
                                             fit: BoxFit.fill,
                                           ),
                                         ),
@@ -87,7 +105,7 @@ class _AddCoursesState extends State<AddCourses> {
                                           child: Text(
                                             provider[index].namecurse!,
                                             style: TextStyle(
-                                                color: Colors.white,
+                                                color: UniCode.defaultTheme.primaryColor,
                                                 fontSize: 20),
                                             overflow: TextOverflow.fade,
                                           ),
@@ -97,19 +115,31 @@ class _AddCoursesState extends State<AddCourses> {
                                   ),
                                 ),
                               ),
-                            )
-                          : Container(
-                              height: 200,
-                              child: CircularProgressIndicator(
-                                color: UniCode.defaultTheme.primaryColor,
-                              ),
                             );
-                    }, childCount: provider.length),
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 1),
-                  )
-                ],
-              ),
+                          }, childCount: provider.length),
+                          gridDelegate:
+                              SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 1),
+                        )
+                      ],
+                    )
+                  : Container(
+                      height: 200,
+                      child: Column(
+                        children: [
+                          const SizedBox(
+                            height: 70,
+                          ),
+                          Text(texto),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          CircularProgressIndicator(
+                            color: UniCode.defaultTheme.primaryColor,
+                          ),
+                        ],
+                      ),
+                    ),
             ),
           ),
           SliverToBoxAdapter(

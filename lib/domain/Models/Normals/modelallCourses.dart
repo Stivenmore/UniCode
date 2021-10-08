@@ -6,8 +6,9 @@ class AllCoursesModel {
   final String? descripcion;
   final String? imagepromotion;
   final String? namecurse;
+  final String? publicado;
 
-  AllCoursesModel({this.namecurse, this.imagepromotion, this.tutor, this.nivel, this.descripcion,});
+  AllCoursesModel({this.publicado, this.namecurse, this.imagepromotion, this.tutor, this.nivel, this.descripcion,});
 
    factory AllCoursesModel.fromFirebase(QueryDocumentSnapshot<Map<String, dynamic>> capDetails) { 
 
@@ -16,6 +17,7 @@ class AllCoursesModel {
      tutor: capDetails['tutor'] as String? ?? '',
      nivel: capDetails['nivel'] as String? ?? '',
      descripcion: capDetails['descripcion'] as String? ?? '',
-     namecurse: capDetails['namecurse'] as String? ?? ''
+     namecurse: capDetails['namecurse'] as String? ?? '',
+     publicado: capDetails['publicado'] as String? ?? ''
    );}
 }

@@ -16,9 +16,11 @@ class HomeRepository with ChangeNotifier implements AbstractHome {
   FirebaseStorage _storage = FirebaseStorage.instance;
   CoursesModel coursesModel = CoursesModel();
   List<AllCoursesModel> allcoursesModel = [];
+  List<AllCoursesModel> allcoursesgeneral = [];
   HomeRepository() {
-    this.getCourses();
+  //this.getCourses();
     this.getallcourses();
+    this.getallCoursesGeneral();
   }
   @override
   getCourses() async {
@@ -86,7 +88,8 @@ class HomeRepository with ChangeNotifier implements AbstractHome {
         'imagepromotion': urlpromotion,
         'nivel': nivel,
         'tutor': user.username,
-        'namecurse': namecurse
+        'namecurse': namecurse.toUpperCase(),
+        'publicado': DateTime.now().toUtc(),
       });
       await _firestore
           .collection('Users')
@@ -105,7 +108,8 @@ class HomeRepository with ChangeNotifier implements AbstractHome {
         'imagepromotion': urlpromotion,
         'nivel': nivel,
         'tutor': user.username,
-        'namecurse': namecurse
+        'namecurse': namecurse.toUpperCase(),
+        'publicado': DateTime.now().toUtc(),
       });
 
       await _firestore
@@ -151,8 +155,6 @@ class HomeRepository with ChangeNotifier implements AbstractHome {
       required String namecurse,
       required String nombre,
       required String url}) async {
-    final box = Hive.box<UserHive>('user');
-    final user = box.get(0) as UserHive;
     try {
       await _firestore
           .collection('Users')
@@ -184,6 +186,33 @@ class HomeRepository with ChangeNotifier implements AbstractHome {
       return false;
     }
   }
+
+  @override
+  getallCoursesGeneral() async{
+    try {
+      final capReference = await _firestore
+          .collection('Cursos')
+          .get();
+      allcoursesgeneral = (capReference.docs)
+          .map((e) => AllCoursesModel.fromFirebase(e))
+          .toList();
+      print('_______');
+      print(allcoursesModel.length);
+      print('_______');
+      notifyListeners();
+    } catch (e) {
+      print('____________');
+      print(e);
+      print('____________');
+    }
+  }
+
+  @override
+  detailCourse() {
+    // TODO: implement detailCourse
+    throw UnimplementedError();
+  }
+
 }
 
 /*

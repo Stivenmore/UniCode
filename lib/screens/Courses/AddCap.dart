@@ -18,6 +18,7 @@ class AddCap extends StatefulWidget {
 }
 
 class _AddCapState extends State<AddCap> {
+  String texto = 'Buscando tus cursos';
   int? currentindex;
   AllCoursesModel? allCoursesModel;
   final letravalidate = AddCapValidate();
@@ -28,6 +29,26 @@ class _AddCapState extends State<AddCap> {
   HomeRepository homeRepository = HomeRepository();
   String? urltext;
 
+
+  @override
+  void initState() {
+        Future.delayed(Duration(seconds: 2), () {
+      setState(() {
+        texto = 'Buscando tus cursos';
+      });
+    });
+    Future.delayed(Duration(seconds: 7), () {
+      setState(() {
+        texto = 'Aun no logramos encontrar tus cursos';
+      });
+    });
+    Future.delayed(Duration(seconds: 11), () {
+      setState(() {
+        texto = 'No logramos encontrar tus cursos';
+      });
+    });
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<HomeRepository>(context).allcoursesModel;
@@ -127,15 +148,15 @@ class _AddCapState extends State<AddCap> {
                       child: Column(
                         children: [
                           const SizedBox(
-                            height: 30,
+                            height: 70,
+                          ),
+                          Text(texto),
+                          const SizedBox(
+                            height: 20,
                           ),
                           CircularProgressIndicator(
                             color: UniCode.defaultTheme.primaryColor,
                           ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          Text('Esperando cursos para subir capitulo')
                         ],
                       ),
                     ),

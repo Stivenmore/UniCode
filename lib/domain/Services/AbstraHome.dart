@@ -19,4 +19,8 @@ abstract class AbstractHome {
       required String namecurse,
        required String nombre,
         required String url});
+  
+  getallCoursesGeneral();
+
+  detailCourse();
 }

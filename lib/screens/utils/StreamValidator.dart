@@ -104,7 +104,7 @@ class AddCapValidate with Validators{
   Function(String) get changeurl => _urlController.sink.add;
 
   dispose() {
-    _nombreController.close();;
+    _nombreController.close();
     _urlController.close();
   }
 }

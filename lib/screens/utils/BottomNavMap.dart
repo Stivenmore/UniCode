@@ -6,10 +6,6 @@ List<Map<String, dynamic>> bottomnav = [
     "label": 'Home',
   },
   {
-    "icon": Icons.search,
-    "label": 'Search',
-  },
-  {
     "icon": Icons.favorite,
     "label": 'Favorite',
   },
